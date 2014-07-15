@@ -1,0 +1,28 @@
+{
+  "name": "istanbul-biennial-split-tiles",
+  "version": "0.0.0",
+  "description": "Showing the latest uploads to mapstack on a map",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/stamen/istanbul-biennial.git"
+  },
+  "keywords": [
+    "mapstack",
+    "leaflet",
+    "nodejs"
+  ],
+  "author": "evg@stamen.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stamen/istanbul-biennial/issues"
+  },
+  "homepage": "https://github.com/stamen/istanbul-biennial",
+  "dependencies": {
+    "xml2js": "~0.4.4",
+    "sphericalmercator": "~1.0.2"
+  }
+}
