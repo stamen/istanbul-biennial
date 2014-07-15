@@ -1,0 +1,89 @@
+---
+layout: default
+title: Where are the tiles?
+---
+
+<style>
+#map {
+  width:100vw;
+  height:100vh;
+}
+.divtile {
+  width:256px;height:256px;
+  z-index: 1100;
+  opacity:.6;
+  margin-top:-155px;
+  overflow:hidden;
+}
+</style>
+
+<div id="map">
+
+</div>
+
+<script>
+// initialize the map on the "map" div with a given center and zoom
+
+var map = L.map('map', {
+    center: [0, 0],
+    zoom: 2
+});
+
+L.tileLayer('http://b.tile.stamen.com/toner-lite/{z}/{x}/{y}.png').addTo(map);
+
+
+function snapSize(size) {
+
+  if (size > 64) {
+    return 64;
+  } else if (size > 32) {
+    return 32;
+  } else if (size > 16) {
+    return 16;
+  } else if (size > 8) {
+    return 8;
+  }
+
+}
+
+$.ajax('/data/groupedByTile.json', {
+  'success' : function(r) {
+
+    var size = 32,
+        total = 0;
+
+    for (var i in r) {
+
+      size = Math.min(((256*256) / (snapSize(r[i].length) * snapSize(r[i].length)))*2, 256);
+
+      if (size) {
+
+        var rows = r[i].map(function(_map) {
+        if (total < 256*256) {
+          total += size*size;
+          return '<img src="'+_map.provider_str.split('{Z}').join(_map.zoom).split('{X}').join(_map.center_merc[0]).split('{Y}').join(_map.center_merc[1])+'" class="minitile" align="left" width="'+size+'" height="'+size+'">';
+          }
+        });
+
+        var myIcon = L.divIcon({
+          className: 'my-div-icon', 
+          html:'<div class="divtile">' + rows.join(' ') + '</div>'
+        });
+
+        var loc = map.containerPointToLatLng(
+          L.point(i.split(':').map(function(v) {console.log(v);return parseInt(v*256)}))
+        );
+
+        L.marker(
+          loc, 
+          {icon: myIcon}
+        ).addTo(map);
+
+      }
+
+      total = 0;
+    }
+
+  }
+});
+</script>
