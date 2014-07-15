@@ -70,7 +70,7 @@ $.ajax('data/groupedByTile.json', {
           html:'<div class="divtile">' + rows.join(' ') + '</div>'
         });
 
-        var loc = map.containerPointToLatLng(
+        var loc = map.layerPointToLatLng(
           L.point(i.split(':').map(function(v) {console.log(v);return parseInt(v*256)}))
         );
 
